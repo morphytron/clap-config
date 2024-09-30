@@ -1,0 +1,17 @@
+[package]
+name = "clap-config"
+version = "0.1.0"
+edition = "2021"
+authors = ["Daniel Alexander Apatiga <dapatiga@gmail.com>"]
+
+[lib]
+name="clap_config"
+crate-type=["lib"]
+
+
+[features]
+
+
+[dependencies]
+conf = "*"
+derive_more = "1.0.0"
