@@ -6,6 +6,7 @@ authors = ["Daniel Alexander Apatiga <dapatiga@gmail.com>"]
 
 [lib]
 name="clap_config"
+proc-macro = false
 crate-type=["lib"]
 
 
@@ -13,5 +14,6 @@ crate-type=["lib"]
 
 
 [dependencies]
-conf = "*"
-derive_more = "1.0.0"
+config = "*"
+serde_json = "*"
+serde = "*"
