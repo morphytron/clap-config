@@ -1,5 +1,5 @@
 [package]
-name = "clap-config"
+name = "struct-to-config"
 version = "0.1.0"
 edition = "2021"
 description = "Add clap (or serde::Deserializeable) structs to config when adding sources to config builder."
