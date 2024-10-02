@@ -16,6 +16,6 @@ crate-type=["lib"]
 
 
 [dependencies]
-config = "*"
-serde_json = "*"
-serde = "*"
+config = "0.14.0"
+serde_json = {  version = "1.0.128" }
+serde = {version="1.0.210"}
