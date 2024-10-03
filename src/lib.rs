@@ -116,11 +116,10 @@ fn convert_non_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultSta
 /// Default behavior is that calling this macro will panic if a struct has a non-implemented type, such as (currently) an array of arrays.
 macro_rules! make_cfg {
     ($($serializeable:ident),+) => {{
-        use crate::get_value_kind_from_value;
-        use crate::convert_panic;
+        use struct_to_config::get_value_kind_from_value;
+        use struct_to_config::convert_panic;
         use serde_json::Value;
         let mut config_builder = Config::builder();
-
         $(
         let value = serde_json::to_value($serializeable).unwrap();
         config_builder = convert_panic(value, Some(config_builder));
@@ -128,9 +127,9 @@ macro_rules! make_cfg {
         config_builder.build().unwrap()
     }};
     ($bool_should_panic:literal,$($serializeable:ident ),+) => {{
-        use crate::get_value_kind_from_value;
-        use crate::convert_non_panic;
-        use crate::convert_panic;
+        use struct_to_config::get_value_kind_from_value;
+        use struct_to_config::convert_non_panic;
+        use struct_to_config::convert_panic;
         let mut config_builder = Config::builder();
         if !$bool_should_panic {
             $(

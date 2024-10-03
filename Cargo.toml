@@ -1,13 +1,13 @@
 [package]
 name = "struct-to-config"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-description = "Add clap (or serde::Deserializeable) structs to config when adding sources to config builder."
+description = "Add clap (or serde::Serializable) structs to config when adding sources to config builder."
 license = "MIT"
 authors = ["Daniel Alexander Apatiga <dapatiga@gmail.com>"]
 
 [lib]
-name="clap_config"
+name="struct_to_config"
 proc-macro = false
 crate-type=["lib"]
 
