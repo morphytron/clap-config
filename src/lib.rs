@@ -16,7 +16,7 @@ enum Kind {
 lazy_static! {
     static ref DEFAULT_VEC : Vec<Value> = Vec::<Value>::new();
 }
-fn get_value_kind_from_value(val: &Value, should_panic: bool) -> (ValueKind, Kind) {
+pub fn get_value_kind_from_value(val: &Value, should_panic: bool) -> (ValueKind, Kind) {
     match val {
         Value::String(f ) => {
             (ValueKind::String(f.to_string()), Kind::String)
@@ -43,7 +43,7 @@ fn get_value_kind_from_value(val: &Value, should_panic: bool) -> (ValueKind, Kin
         }
     }
 }
-fn convert_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
+pub fn convert_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
     let mut config_builder = cfg_builder.unwrap_or(config::Config::builder());
     if value.is_object() {
         let map = value.as_object();
@@ -76,7 +76,7 @@ fn convert_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultState>>
     config_builder
 }
 
-fn convert_non_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
+pub fn convert_non_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
     let mut config_builder = cfg_builder.unwrap_or(config::Config::builder());
     if value.is_object() {
         let map = value.as_object();
