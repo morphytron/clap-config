@@ -53,6 +53,6 @@ pub fn test1() {
         .add_source(config::File::with_name("path_to_file/blah.cfg"))
         .add_source(cfg);
     cfg = settings_builder.build().unwrap();
-    assert_eq!(cfg.get_string("name").unwrap(), "Joe".to_string());
+    assert_eq!(cfg.get_string("joe").ok(), None);
 }
 ```
