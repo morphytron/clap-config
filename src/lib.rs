@@ -1,3 +1,5 @@
+extern crate self as struct_to_config;
+
 use config::{ConfigBuilder, Source, ValueKind};
 use config::builder::DefaultState;
 use lazy_static::lazy_static;
@@ -16,8 +18,11 @@ enum Kind {
 lazy_static! {
     static ref DEFAULT_VEC : Vec<Value> = Vec::<Value>::new();
 }
-pub fn get_value_kind_from_value(val: &Value, should_panic: bool) -> (ValueKind, Kind) {
+fn get_value_kind_from_value(val: &Value, should_panic: bool) -> (ValueKind, Kind) {
     match val {
+        Value::Null => {
+            (ValueKind::Nil, Kind::Nil)
+        }
         Value::String(f ) => {
             (ValueKind::String(f.to_string()), Kind::String)
         },
@@ -68,6 +73,8 @@ pub fn convert_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultSta
                 config_builder = config_builder.set_default(item.0.as_str(), item.1.as_u64().unwrap()).expect(COULD_NOT_SET_ITEM);
             } else if item.1.is_object() {
                 config_builder = convert_panic(item.1.clone(), Some(config_builder));
+            } else if item.1.is_null() {
+                continue;
             } else {
                 panic!("{}", NOT_SUPPORTED_TYPE);
             }
@@ -101,6 +108,8 @@ pub fn convert_non_panic(value : Value, cfg_builder: Option<ConfigBuilder<Defaul
                 config_builder = config_builder.set_default(item.0.as_str(), item.1.as_u64().unwrap()).unwrap_or_default();
             } else if item.1.is_object() {
                 config_builder = convert_non_panic(item.1.clone(), Some(config_builder));
+            } else if item.1.is_null() {
+                continue;
             } else {
                 println!("Deserialized object is not one of supported types, so it was not added to the config.");
             }
@@ -116,9 +125,8 @@ pub fn convert_non_panic(value : Value, cfg_builder: Option<ConfigBuilder<Defaul
 /// Default behavior is that calling this macro will panic if a struct has a non-implemented type, such as (currently) an array of arrays.
 macro_rules! make_cfg {
     ($($serializeable:ident),+) => {{
-        use struct_to_config::get_value_kind_from_value;
-        use struct_to_config::convert_panic;
         use serde_json::Value;
+        use struct_to_config::convert_panic;
         let mut config_builder = Config::builder();
         $(
         let value = serde_json::to_value($serializeable).unwrap();
@@ -127,9 +135,8 @@ macro_rules! make_cfg {
         config_builder.build().unwrap()
     }};
     ($bool_should_panic:literal,$($serializeable:ident ),+) => {{
-        use struct_to_config::get_value_kind_from_value;
-        use struct_to_config::convert_non_panic;
         use struct_to_config::convert_panic;
+        use struct_to_config::convert_non_panic;
         let mut config_builder = Config::builder();
         if !$bool_should_panic {
             $(

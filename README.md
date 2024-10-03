@@ -18,9 +18,10 @@ Fails on compile time if any attribute of a struct (doesn't necessarily have to 
 2. f64
 3. u64
 4. string
-5. objects (structs that implement Serialize)
-5. bool
-6. **SUPPORTS IN A LIMITED WAY** arrays with objects or a supported ValueKind enum from Serde crate (all numbers are automatically of the f64 type).  And, arrays do not support nested arrays at the moment.
+5. Option<..>
+6. objects (structs that implement Serialize)
+7. bool
+8. **SUPPORTS IN A LIMITED WAY** arrays with objects or a supported ValueKind enum from Serde crate (all numbers are automatically of the f64 type).  And, arrays do not support nested arrays at the moment.
 
 Example
 
@@ -39,10 +40,12 @@ pub struct Make {
     /// Name of person
     #[clap(short, long)]
     name: String,
+    good: Option<String>
 }
 pub fn test1() {
     let make = Make {
-        name: "Joe".to_string()
+        name: "Joe".to_string(), 
+        good: None
     };
     let mut cfg : Config = make_cfg!(make);
     assert_eq!(cfg.get_string("name").unwrap(), "Joe".to_string());
