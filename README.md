@@ -49,7 +49,7 @@ pub fn test1() {
     };
     let mut cfg : Config = make_cfg!(make);
     assert_eq!(cfg.get_string("name").unwrap(), "Joe".to_string());
-    let settings_builder = settings_builder
+    let settings_builder = Config::builder()
         .add_source(config::File::with_name("path_to_file/blah.cfg"))
         .add_source(cfg);
     cfg = settings_builder.build().unwrap();
