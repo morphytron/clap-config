@@ -4,6 +4,7 @@ use config::{ConfigBuilder, Source, ValueKind};
 use config::builder::DefaultState;
 use lazy_static::lazy_static;
 use serde_json::{Value};
+#[cfg(test)]
 mod tests;
 
 
