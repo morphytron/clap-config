@@ -1,6 +1,6 @@
 [package]
 name = "struct-to-config"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "Add clap (or serde::Serializable) structs to config when adding sources to config builder."
 license = "MIT"
