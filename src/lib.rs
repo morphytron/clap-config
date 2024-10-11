@@ -49,7 +49,7 @@ fn get_value_kind_from_value(val: &Value, should_panic: bool) -> (ValueKind, Kin
         }
     }
 }
-pub fn convert_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
+pub fn convert_panic(value : &Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
     let mut config_builder = cfg_builder.unwrap_or(config::Config::builder());
     if value.is_object() {
         let map = value.as_object();
@@ -73,7 +73,7 @@ pub fn convert_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultSta
             } else if item.1.is_u64() {
                 config_builder = config_builder.set_default(item.0.as_str(), item.1.as_u64().unwrap()).expect(COULD_NOT_SET_ITEM);
             } else if item.1.is_object() {
-                config_builder = convert_panic(item.1.clone(), Some(config_builder));
+                config_builder = convert_panic(item.1, Some(config_builder));
             } else if item.1.is_null() {
                 continue;
             } else {
@@ -84,7 +84,7 @@ pub fn convert_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultSta
     config_builder
 }
 
-pub fn convert_non_panic(value : Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
+pub fn convert_non_panic(value : &Value, cfg_builder: Option<ConfigBuilder<DefaultState>>) -> ConfigBuilder<DefaultState> {
     let mut config_builder = cfg_builder.unwrap_or(config::Config::builder());
     if value.is_object() {
         let map = value.as_object();
@@ -108,7 +108,7 @@ pub fn convert_non_panic(value : Value, cfg_builder: Option<ConfigBuilder<Defaul
             } else if item.1.is_u64() {
                 config_builder = config_builder.set_default(item.0.as_str(), item.1.as_u64().unwrap()).unwrap_or_default();
             } else if item.1.is_object() {
-                config_builder = convert_non_panic(item.1.clone(), Some(config_builder));
+                config_builder = convert_non_panic(item.1, Some(config_builder));
             } else if item.1.is_null() {
                 continue;
             } else {
@@ -131,7 +131,7 @@ macro_rules! make_cfg {
         let mut config_builder = Config::builder();
         $(
         let value = serde_json::to_value($serializeable).unwrap();
-        config_builder = convert_panic(value, Some(config_builder));
+        config_builder = convert_panic(&value, Some(config_builder));
         )+
         config_builder.build().unwrap()
     }};
@@ -142,12 +142,12 @@ macro_rules! make_cfg {
         if !$bool_should_panic {
             $(
             let value = serde_json::to_value($serializeable).unwrap();
-            config_builder = convert_non_panic(value, Some(config_builder));
+            config_builder = convert_non_panic(&value, Some(config_builder));
             )+
         } else {
             $(
             let value = serde_json::to_value($serializeable).unwrap();
-            config_builder = convert_panic(value, Some(config_builder));
+            config_builder = convert_panic(&value, Some(config_builder));
             )+
         }
         config_builder.build().unwrap()
