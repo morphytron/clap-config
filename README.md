@@ -1,7 +1,7 @@
 # struct-to-config
 ## Purpose
 
-I ran into a problem with adding clap structs into a config file, easily, of which I figured I could use Serde to serialize and add it manually that way.  This was tedious to do this for each use case, so I designed this crate to be simple to use.
+This crate is to solve a problem regarding combining configs that are structs, easily, to my config sources.  I figured I could use Serde to serialize and add it manually this way.  This would have been tedious to do this for each use case, so I created a macro to do it.
 
 ### Features
 
