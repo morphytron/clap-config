@@ -1,7 +1,7 @@
 # struct-to-config
 ## Purpose
 
-This crate is to solve a problem regarding combining configs that are structs, easily, to my config sources.  I figured I could use Serde to serialize and add it manually this way.  This would have been tedious to do this for each use case, so I created a macro to do it.
+This crate is to solve a problem regarding combining configs that are structs, easily, to config sources.  I figured I could use Serde to serialize and add it manually this way.  This would have been tedious to do this for each use case, so I created a macro to do it.
 
 ### Features
 
